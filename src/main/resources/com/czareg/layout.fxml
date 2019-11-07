@@ -2,12 +2,15 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -15,7 +18,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" minHeight="250.0" minWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="CENTER" minHeight="300.0" minWidth="450.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.czareg.Controller">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -60,8 +63,8 @@
          <children>
             <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="130.0" minWidth="130.0" prefWidth="130.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="310.20001220703125" minWidth="10.0" prefWidth="291.20002441406245" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -70,20 +73,28 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label text="BX" />
-                  <Label text="CX1" GridPane.rowIndex="1" />
-                  <Label text="CX2" GridPane.rowIndex="2" />
-                  <Label text="EventService" GridPane.rowIndex="3" />
-                  <Label text="Vcenter1" GridPane.rowIndex="4" />
-                  <Label text="Vcenter2" GridPane.rowIndex="5" />
-                  <ChoiceBox fx:id="bx" prefWidth="300.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                  <ChoiceBox fx:id="cx1" prefWidth="300.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <ChoiceBox fx:id="cx2" prefWidth="300.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                  <ChoiceBox fx:id="es" prefWidth="300.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-                  <ChoiceBox fx:id="vc1" prefWidth="300.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-                  <ChoiceBox fx:id="vc2" prefWidth="300.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+                  <Label text="BX" GridPane.halignment="CENTER" />
+                  <Label text="CX1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Label text="CX2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                  <Label text="EventService" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+                  <Label text="Vcenter1" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+                  <Label text="Vcenter2" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+                  <ChoiceBox fx:id="bx" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                  <ChoiceBox fx:id="cx1" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <ChoiceBox fx:id="cx2" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                  <ChoiceBox fx:id="es" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+                  <ChoiceBox fx:id="vc1" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+                  <ChoiceBox fx:id="vc2" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+                  <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6">
+                     <children>
+                        <TextField fx:id="path" HBox.hgrow="ALWAYS" />
+                        <Button fx:id="browse" mnemonicParsing="false" text="Browse..." />
+                     </children>
+                  </HBox>
+                  <Label text="Files location" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
                </children>
             </GridPane>
          </children>
@@ -91,11 +102,17 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
     </AnchorPane>
+      <Separator prefWidth="200.0" />
       <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="10.0">
          <children>
-            <Button fx:id="browse" mnemonicParsing="false" text="Browse..." />
-            <Button fx:id="create" mnemonicParsing="false" text="Create files" />
+            <CheckBox fx:id="loadOnStart" mnemonicParsing="false" selected="true" text="Load on start" />
+            <Button fx:id="load" mnemonicParsing="false" text="Load values" />
+            <Button fx:id="save" mnemonicParsing="false" text="Save current values" />
+            <Button fx:id="create" defaultButton="true" mnemonicParsing="false" text="Create files" />
          </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
       </HBox>
   </children>
 </VBox>
