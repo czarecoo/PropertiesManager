@@ -2,7 +2,8 @@ package controller;
 
 import java.io.File;
 
-import controller.utils.ConfigSaver;
+import controller.utils.ConfigDataSaver;
+import controller.utils.HostDataSaver;
 import controller.utils.TxtFileReader;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -12,6 +13,8 @@ import javafx.scene.control.Control;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
+import model.ConfigData;
+import model.HostData;
 
 public class Controller {
 	@FXML
@@ -33,28 +36,16 @@ public class Controller {
 	private TextField path;
 
 	@FXML
-	private Button save;
-	@FXML
-	private Button create;
+	private Button update;
 
 	@FXML
 	private void initialize() {
-		initDefaultOptions();
 		initChoiceBoxes();
 		initBrowseButton();
 		initCreateButton();
-		initSaveButton();
 	}
 
 	private void initChoiceBoxes() {
-		initDefaultOptions();
-		initLists();
-	}
-
-	private void initDefaultOptions() {
-	}
-
-	private void initLists() {
 		TxtFileReader txtFileReader = new TxtFileReader();
 		bx.setItems(txtFileReader.read("bx.txt"));
 		ObservableList<String> cxList = txtFileReader.read("cx.txt");
@@ -79,14 +70,13 @@ public class Controller {
 	}
 
 	private void initCreateButton() {
-		create.setOnAction(e -> {
-			ConfigSaver configSaver = new ConfigSaver();
-			configSaver.save(es.getValue(), vc1.getValue(), vc2.getValue(), path.getText());
-		});
-	}
-
-	private void initSaveButton() {
-		save.setOnAction(e -> {
+		update.setOnAction(e -> {
+			ConfigData configData = new ConfigData(es.getValue(), vc1.getValue(), vc2.getValue());
+			ConfigDataSaver configSaver = new ConfigDataSaver();
+			configSaver.save(configData, path.getText());
+			HostData hostData = new HostData(bx.getValue(), cx1.getValue(), cx2.getValue());
+			HostDataSaver hostSaver = new HostDataSaver();
+			hostSaver.save(hostData, path.getText());
 		});
 	}
 }
