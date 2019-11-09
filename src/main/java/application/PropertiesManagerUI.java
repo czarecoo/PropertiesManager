@@ -1,4 +1,5 @@
-package com.czareg;
+package application;
+
 
 import java.io.IOException;
 

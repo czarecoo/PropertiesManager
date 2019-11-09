@@ -1,4 +1,4 @@
-package com.czareg.utils;
+package controller.utils;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
