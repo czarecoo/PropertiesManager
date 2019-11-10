@@ -17,7 +17,7 @@ import model.HostData;
 
 public class HostDataSaver {
 	static final Logger LOG = LoggerFactory.getLogger(HostDataSaver.class);
-	private static final String FILE_NAME = "hosts.properties";
+	private static final String FILE_PATH = "hosts.properties";
 	private static final String BX_KEY = "host.bx.1.address";
 	private static final String CX1_KEY = "host.cx.1.address";
 	private static final String CX2_KEY = "host.cx.2.address";
@@ -28,7 +28,7 @@ public class HostDataSaver {
 	private static final String CX2_IRMC_KEY = "host.irmc.cx2.address";
 
 	public void save(HostData hostData, String userPath) {
-		Path path = Paths.get(userPath, FILE_NAME);
+		Path path = Paths.get(userPath, FILE_PATH);
 		try (Stream<String> lines = Files.lines(path)) {
 			List<String> replaced = lines.map(line -> replace(line, BX_KEY, hostData.getBx()))
 					.map(line -> replace(line, CX1_KEY, hostData.getCx1()))
@@ -38,9 +38,9 @@ public class HostDataSaver {
 					.map(line -> replace(line, CX2_IRMC_KEY, changeIpToIrmcAddress(hostData.getCx2())))
 					.collect(Collectors.toList());
 			Files.write(path, replaced);
-			LOG.info("Saved host data to file: {}", FILE_NAME);
+			LOG.info("Saved host data to file: {}", FILE_PATH);
 		} catch (IOException e) {
-			LOG.error(String.format("Failed to save %s.", FILE_NAME), e);
+			LOG.error(String.format("Failed to save %s.", FILE_PATH), e);
 		}
 	}
 

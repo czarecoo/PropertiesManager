@@ -17,14 +17,14 @@ import model.ConfigData;
 
 public class ConfigDataSaver {
 	static final Logger LOG = LoggerFactory.getLogger(ConfigDataSaver.class);
-	private static final String FILE_NAME = "test_config.properties";
+	private static final String FILE_PATH = "test_config.properties";
 	private static final String ES1_KEY = "es.host";
 	private static final String ES2_KEY = "soa.address";
 	private static final String VC1_KEY = "vc.multi.1.host";
 	private static final String VC2_KEY = "vc.mutli.2.host";
 
 	public void save(ConfigData config, String userPath) {
-		Path path = Paths.get(userPath, FILE_NAME);
+		Path path = Paths.get(userPath, FILE_PATH);
 		try (Stream<String> lines = Files.lines(path)) {
 			List<String> replaced = lines.map(line -> replace(line, ES1_KEY, config.getEs()))
 					.map(line -> replace(line, ES2_KEY, config.getEs()))
@@ -32,9 +32,9 @@ public class ConfigDataSaver {
 					.map(line -> replace(line, VC2_KEY, config.getVc2()))
 					.collect(Collectors.toList());
 			Files.write(path, replaced);
-			LOG.info("Saved config data to file: {}", FILE_NAME);
+			LOG.info("Saved config data to file: {}", FILE_PATH);
 		} catch (IOException e) {
-			LOG.error(String.format("Failed to save %s.", FILE_NAME), e);
+			LOG.error(String.format("Failed to save %s.", FILE_PATH), e);
 		}
 	}
 }

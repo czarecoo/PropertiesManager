@@ -13,10 +13,12 @@ import javafx.collections.ObservableList;
 
 public final class TxtFileReader {
 	private static final Logger LOG = LoggerFactory.getLogger(TxtFileReader.class);
+	private static final String FILE_PATH = "config/";
 
 	public ObservableList<String> read(String fileName) {
 		ObservableList<String> list = FXCollections.observableArrayList();
-		try (BufferedReader br = new BufferedReader(new FileReader(new File(fileName)))) {
+		File file = new File(createPath(fileName));
+		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
 			String line;
 			while ((line = br.readLine()) != null) {
 				list.add(line);
@@ -26,5 +28,9 @@ public final class TxtFileReader {
 			LOG.error("Failed to read from file", e);
 		}
 		return list;
+	}
+
+	private String createPath(String filename) {
+		return FILE_PATH + filename;
 	}
 }

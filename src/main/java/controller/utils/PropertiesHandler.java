@@ -17,7 +17,7 @@ import model.UserData;
 
 public class PropertiesHandler {
 	static final Logger LOG = LoggerFactory.getLogger(PropertiesHandler.class);
-	private static final String FILE_NAME = "user.properties";
+	private static final String FILE_PATH = "config/user.properties";
 	private static final String BX_KEY = "bx";
 	private static final String CX1_KEY = "cx1";
 	private static final String CX2_KEY = "cx2";
@@ -27,13 +27,13 @@ public class PropertiesHandler {
 	private static final String PATH = "path";
 
 	public void save(UserData userData) {
-		createFileIfNotExists(FILE_NAME);
+		createFileIfNotExists(FILE_PATH);
 		Properties prop = new Properties();
 		try {
-			try (InputStream input = new FileInputStream(FILE_NAME)) {
+			try (InputStream input = new FileInputStream(FILE_PATH)) {
 				prop.load(input);
 			}
-			try (OutputStream output = new FileOutputStream(FILE_NAME)) {
+			try (OutputStream output = new FileOutputStream(FILE_PATH)) {
 				prop.setProperty(BX_KEY, userData.getBx());
 				prop.setProperty(CX1_KEY, userData.getCx1());
 				prop.setProperty(CX2_KEY, userData.getCx2());
@@ -42,7 +42,7 @@ public class PropertiesHandler {
 				prop.setProperty(VC2_KEY, userData.getVc2());
 				prop.setProperty(PATH, userData.getPath());
 				prop.store(output, null);
-				LOG.info("Saved properties to file: {}", FILE_NAME);
+				LOG.info("Saved properties to file: {}", FILE_PATH);
 			}
 		} catch (IOException e) {
 			LOG.error("Failed to save data to property", e);
@@ -50,8 +50,8 @@ public class PropertiesHandler {
 	}
 
 	public UserData load() {
-		createFileIfNotExists(FILE_NAME);
-		try (InputStream input = new FileInputStream(FILE_NAME)) {
+		createFileIfNotExists(FILE_PATH);
+		try (InputStream input = new FileInputStream(FILE_PATH)) {
 			Properties prop = new Properties();
 			prop.load(input);
 			HostData hostData = new HostData(prop.getProperty(BX_KEY), prop.getProperty(CX1_KEY),

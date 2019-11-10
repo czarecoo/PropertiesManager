@@ -5,12 +5,6 @@ Click [here](https://github.com/czarecoo/PropertiesManager/releases) to download
 ## Installation
 Type
 ```bash
-mvn clean javafx:run
-```
-to run application from maven.
-
-or type
-```bash
 mvn package
 ```
 to get jar file (it will be created in target/ directory)
@@ -20,3 +14,8 @@ to get jar file (it will be created in target/ directory)
 ```bash
 double click jar file to start app's javafx gui
 ```
+
+## Whats next
+- FQDN support
+- Success/Error reporting
+- Integration with HRS
