@@ -1,5 +1,7 @@
 package controller.utils;
 
+import static controller.utils.StringReplaceUtil.replace;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,7 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import model.HostData;
 
-public class HostDataSaver extends Saver {
+public class HostDataSaver {
 	static final Logger LOG = LoggerFactory.getLogger(HostDataSaver.class);
 	private static final String FILE_NAME = "hosts.properties";
 	private static final String BX_KEY = "host.bx.1.address";

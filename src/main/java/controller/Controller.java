@@ -4,17 +4,21 @@ import java.io.File;
 
 import controller.utils.ConfigDataSaver;
 import controller.utils.HostDataSaver;
+import controller.utils.PropertiesHandler;
 import controller.utils.TxtFileReader;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Control;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import model.ConfigData;
 import model.HostData;
+import model.UserData;
 
 public class Controller {
 	@FXML
@@ -39,13 +43,28 @@ public class Controller {
 	private Button update;
 
 	@FXML
+	private MenuItem save;
+	@FXML
+	private MenuItem load;
+	@FXML
+	private MenuItem quit;
+
+	@FXML
 	private void initialize() {
-		initChoiceBoxes();
+		initDefaultValues();
+		initChoiceBoxLists();
 		initBrowseButton();
 		initCreateButton();
+		initSaveMenuButton();
+		initLoadMenuButton();
+		initQuitMenuButton();
 	}
 
-	private void initChoiceBoxes() {
+	private void initDefaultValues() {
+		loadDefaultData();
+	}
+
+	private void initChoiceBoxLists() {
 		TxtFileReader txtFileReader = new TxtFileReader();
 		bx.setItems(txtFileReader.read("bx.txt"));
 		ObservableList<String> cxList = txtFileReader.read("cx.txt");
@@ -78,5 +97,38 @@ public class Controller {
 			HostDataSaver hostSaver = new HostDataSaver();
 			hostSaver.save(hostData, path.getText());
 		});
+	}
+
+	private void initSaveMenuButton() {
+		save.setOnAction(e -> {
+			ConfigData configData = new ConfigData(es.getValue(), vc1.getValue(), vc2.getValue());
+			HostData hostData = new HostData(bx.getValue(), cx1.getValue(), cx2.getValue());
+			PropertiesHandler propertiesHandler = new PropertiesHandler();
+			propertiesHandler.save(new UserData(hostData, configData, path.getText()));
+		});
+	}
+
+	private void initLoadMenuButton() {
+		load.setOnAction(e -> {
+			loadDefaultData();
+		});
+	}
+
+	private void initQuitMenuButton() {
+		quit.setOnAction(e -> {
+			Platform.exit();
+		});
+	}
+
+	private void loadDefaultData() {
+		PropertiesHandler propertiesHandler = new PropertiesHandler();
+		UserData userData = propertiesHandler.load();
+		bx.setValue(userData.getBx());
+		cx1.setValue(userData.getCx1());
+		cx2.setValue(userData.getCx2());
+		es.setValue(userData.getEs());
+		vc1.setValue(userData.getVc1());
+		vc2.setValue(userData.getVc2());
+		path.setText(userData.getPath());
 	}
 }

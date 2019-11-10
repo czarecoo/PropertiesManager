@@ -1,5 +1,7 @@
 package controller.utils;
 
+import static controller.utils.StringReplaceUtil.replace;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,7 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import model.ConfigData;
 
-public class ConfigDataSaver extends Saver {
+public class ConfigDataSaver {
 	static final Logger LOG = LoggerFactory.getLogger(ConfigDataSaver.class);
 	private static final String FILE_NAME = "test_config.properties";
 	private static final String ES1_KEY = "es.host";
