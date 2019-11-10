@@ -1,6 +1,7 @@
 package controller.utils;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -15,12 +16,12 @@ public final class TxtFileReader {
 
 	public ObservableList<String> read(String fileName) {
 		ObservableList<String> list = FXCollections.observableArrayList();
-		try (BufferedReader br = new BufferedReader(
-				new FileReader(getClass().getClassLoader().getResource(fileName).getPath()))) {
+		try (BufferedReader br = new BufferedReader(new FileReader(new File(fileName)))) {
 			String line;
 			while ((line = br.readLine()) != null) {
 				list.add(line);
 			}
+			LOG.info("Read data from file: {}", fileName);
 		} catch (IOException e) {
 			LOG.error("Failed to read from file", e);
 		}

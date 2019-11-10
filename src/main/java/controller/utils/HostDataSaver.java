@@ -38,6 +38,7 @@ public class HostDataSaver {
 					.map(line -> replace(line, CX2_IRMC_KEY, changeIpToIrmcAddress(hostData.getCx2())))
 					.collect(Collectors.toList());
 			Files.write(path, replaced);
+			LOG.info("Saved host data to file: {}", FILE_NAME);
 		} catch (IOException e) {
 			LOG.error(String.format("Failed to save %s.", FILE_NAME), e);
 		}

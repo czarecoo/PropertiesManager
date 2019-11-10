@@ -8,7 +8,7 @@ public class UserData {
 	public UserData(HostData hostData, ConfigData configData, String path) {
 		this.hostData = hostData;
 		this.configData = configData;
-		this.path = path;
+		this.path = path != null ? path : "";
 	}
 
 	public String getBx() {

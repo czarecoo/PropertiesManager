@@ -42,6 +42,7 @@ public class PropertiesHandler {
 				prop.setProperty(VC2_KEY, userData.getVc2());
 				prop.setProperty(PATH, userData.getPath());
 				prop.store(output, null);
+				LOG.info("Saved properties to file: {}", FILE_NAME);
 			}
 		} catch (IOException e) {
 			LOG.error("Failed to save data to property", e);

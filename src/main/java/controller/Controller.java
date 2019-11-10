@@ -2,6 +2,9 @@ package controller;
 
 import java.io.File;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import controller.utils.ConfigDataSaver;
 import controller.utils.HostDataSaver;
 import controller.utils.PropertiesHandler;
@@ -21,6 +24,7 @@ import model.HostData;
 import model.UserData;
 
 public class Controller {
+	static final Logger LOG = LoggerFactory.getLogger(Controller.class);
 	@FXML
 	private ChoiceBox<String> bx;
 	@FXML
@@ -54,7 +58,7 @@ public class Controller {
 		initDefaultValues();
 		initChoiceBoxLists();
 		initBrowseButton();
-		initCreateButton();
+		initUpdateButton();
 		initSaveMenuButton();
 		initLoadMenuButton();
 		initQuitMenuButton();
@@ -74,6 +78,7 @@ public class Controller {
 		ObservableList<String> vcList = txtFileReader.read("vc.txt");
 		vc1.setItems(vcList);
 		vc2.setItems(vcList);
+		LOG.info("Initialized choice box lists");
 	}
 
 	private void initBrowseButton() {
@@ -84,11 +89,13 @@ public class Controller {
 			File selectedDirectory = directoryChooser.showDialog(stage);
 			if (selectedDirectory != null && selectedDirectory.getAbsolutePath() != null) {
 				path.setText(selectedDirectory.getAbsolutePath());
+				LOG.info("Selected directory: {}", selectedDirectory.getAbsolutePath());
 			}
 		});
+		LOG.info("Initialized browse button");
 	}
 
-	private void initCreateButton() {
+	private void initUpdateButton() {
 		update.setOnAction(e -> {
 			ConfigData configData = new ConfigData(es.getValue(), vc1.getValue(), vc2.getValue());
 			ConfigDataSaver configSaver = new ConfigDataSaver();
@@ -97,6 +104,7 @@ public class Controller {
 			HostDataSaver hostSaver = new HostDataSaver();
 			hostSaver.save(hostData, path.getText());
 		});
+		LOG.info("Initialized update button");
 	}
 
 	private void initSaveMenuButton() {
@@ -106,18 +114,22 @@ public class Controller {
 			PropertiesHandler propertiesHandler = new PropertiesHandler();
 			propertiesHandler.save(new UserData(hostData, configData, path.getText()));
 		});
+		LOG.info("Initialized save button");
 	}
 
 	private void initLoadMenuButton() {
 		load.setOnAction(e -> {
 			loadDefaultData();
 		});
+		LOG.info("Initialized load button");
 	}
 
 	private void initQuitMenuButton() {
 		quit.setOnAction(e -> {
 			Platform.exit();
+			LOG.info("Quitting application");
 		});
+		LOG.info("Initialized quit button");
 	}
 
 	private void loadDefaultData() {
@@ -130,5 +142,6 @@ public class Controller {
 		vc1.setValue(userData.getVc1());
 		vc2.setValue(userData.getVc2());
 		path.setText(userData.getPath());
+		LOG.info("Loaded default data");
 	}
 }

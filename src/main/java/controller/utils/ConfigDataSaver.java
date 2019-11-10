@@ -32,6 +32,7 @@ public class ConfigDataSaver {
 					.map(line -> replace(line, VC2_KEY, config.getVc2()))
 					.collect(Collectors.toList());
 			Files.write(path, replaced);
+			LOG.info("Saved config data to file: {}", FILE_NAME);
 		} catch (IOException e) {
 			LOG.error(String.format("Failed to save %s.", FILE_NAME), e);
 		}
