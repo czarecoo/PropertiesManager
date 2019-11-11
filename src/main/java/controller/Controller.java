@@ -8,9 +8,7 @@ import org.slf4j.LoggerFactory;
 import controller.utils.ConfigDataSaver;
 import controller.utils.HostDataSaver;
 import controller.utils.PropertiesHandler;
-import controller.utils.TxtFileReader;
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -53,10 +51,12 @@ public class Controller {
 	@FXML
 	private MenuItem quit;
 
+	private ChoiceBoxesController choiceBoxesController;
+
 	@FXML
 	private void initialize() {
+		initChoiceBoxesController();
 		initDefaultValues();
-		initChoiceBoxLists();
 		initBrowseButton();
 		initUpdateButton();
 		initSaveMenuButton();
@@ -68,17 +68,9 @@ public class Controller {
 		loadDefaultData();
 	}
 
-	private void initChoiceBoxLists() {
-		TxtFileReader txtFileReader = new TxtFileReader();
-		bx.setItems(txtFileReader.read("bx.txt"));
-		ObservableList<String> cxList = txtFileReader.read("cx.txt");
-		cx1.setItems(cxList);
-		cx2.setItems(cxList);
-		es.setItems(txtFileReader.read("es.txt"));
-		ObservableList<String> vcList = txtFileReader.read("vc.txt");
-		vc1.setItems(vcList);
-		vc2.setItems(vcList);
-		LOG.info("Initialized choice box lists");
+	private void initChoiceBoxesController() {
+		choiceBoxesController = new ChoiceBoxesController(bx, cx1, cx2, es, vc1, vc2);
+		choiceBoxesController.init();
 	}
 
 	private void initBrowseButton() {
@@ -97,10 +89,10 @@ public class Controller {
 
 	private void initUpdateButton() {
 		update.setOnAction(e -> {
-			ConfigData configData = new ConfigData(es.getValue(), vc1.getValue(), vc2.getValue());
+			ConfigData configData = choiceBoxesController.createConfigData();
 			ConfigDataSaver configSaver = new ConfigDataSaver();
 			configSaver.save(configData, path.getText());
-			HostData hostData = new HostData(bx.getValue(), cx1.getValue(), cx2.getValue());
+			HostData hostData = choiceBoxesController.createHostData();
 			HostDataSaver hostSaver = new HostDataSaver();
 			hostSaver.save(hostData, path.getText());
 		});
@@ -109,8 +101,8 @@ public class Controller {
 
 	private void initSaveMenuButton() {
 		save.setOnAction(e -> {
-			ConfigData configData = new ConfigData(es.getValue(), vc1.getValue(), vc2.getValue());
-			HostData hostData = new HostData(bx.getValue(), cx1.getValue(), cx2.getValue());
+			ConfigData configData = choiceBoxesController.createConfigData();
+			HostData hostData = choiceBoxesController.createHostData();
 			PropertiesHandler propertiesHandler = new PropertiesHandler();
 			propertiesHandler.save(new UserData(hostData, configData, path.getText()));
 		});
@@ -135,12 +127,7 @@ public class Controller {
 	private void loadDefaultData() {
 		PropertiesHandler propertiesHandler = new PropertiesHandler();
 		UserData userData = propertiesHandler.load();
-		bx.setValue(userData.getBx());
-		cx1.setValue(userData.getCx1());
-		cx2.setValue(userData.getCx2());
-		es.setValue(userData.getEs());
-		vc1.setValue(userData.getVc1());
-		vc2.setValue(userData.getVc2());
+		choiceBoxesController.setValues(userData);
 		path.setText(userData.getPath());
 		LOG.info("Loaded default data");
 	}

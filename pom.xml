@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.czareg</groupId>
 	<artifactId>PropertiesManager</artifactId>
-	<version>1.0</version>
+	<version>1.1</version>
 	<packaging>jar</packaging>
 	<name>PropertiesManager</name>
 	<description>This app helps to create properties files.</description>
@@ -76,13 +76,7 @@
 							<outputDirectory>${basedir}/target/config</outputDirectory>
 							<resources>
 								<resource>
-									<directory>src/main/resources</directory>
-									<includes>
-										<include>bx.txt</include>
-										<include>cx.txt</include>
-										<include>es.txt</include>
-										<include>vc.txt</include>
-									</includes>
+									<directory>src/main/resources/config</directory>
 									<filtering>true</filtering>
 								</resource>
 							</resources>

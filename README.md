@@ -16,6 +16,8 @@ double click jar file to start app's javafx gui
 ```
 
 ## Whats next
-- FQDN support
+- Idiot proof app (cx and vc grouping)
+- Update button enables ONLY on not empty fields
+- FQDN support (cx1 by FQDN)
 - Success/Error reporting
-- Integration with HRS
+- Integration with HRS ?
