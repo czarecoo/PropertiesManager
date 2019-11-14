@@ -78,7 +78,7 @@
                      <GridPane.margin>
                         <Insets left="70.0" right="70.0" />
                      </GridPane.margin></ChoiceBox>
-                  <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6">
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6">
                      <children>
                         <TextField fx:id="path" HBox.hgrow="ALWAYS" />
                         <Button fx:id="browse" mnemonicParsing="false" text="Browse..." />

@@ -16,8 +16,8 @@ double click jar file to start app's javafx gui
 ```
 
 ## Whats next
-- Idiot proof app (cx and vc grouping)
+- test_config and hosts properties keys should be read from file (not hardcoded)
 - Update button enables ONLY on not empty fields
-- FQDN support (cx1 by FQDN)
 - Success/Error reporting
 - Integration with HRS ?
+- run app from console ?

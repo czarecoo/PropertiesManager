@@ -98,6 +98,8 @@ public class Controller {
 			HostData hostData = choiceBoxesController.createHostData();
 			HostDataSaver hostSaver = new HostDataSaver();
 			hostSaver.save(hostData, path.getText());
+
+			saveUserDataToProperties(configData, hostData);
 		});
 		LOG.info("Initialized update button");
 	}
@@ -106,10 +108,14 @@ public class Controller {
 		save.setOnAction(e -> {
 			ConfigData configData = choiceBoxesController.createConfigData();
 			HostData hostData = choiceBoxesController.createHostData();
-			PropertiesHandler propertiesHandler = new PropertiesHandler();
-			propertiesHandler.save(new UserData(hostData, configData, path.getText()));
+			saveUserDataToProperties(configData, hostData);
 		});
 		LOG.info("Initialized save button");
+	}
+
+	private void saveUserDataToProperties(ConfigData configData, HostData hostData) {
+		PropertiesHandler propertiesHandler = new PropertiesHandler();
+		propertiesHandler.save(new UserData(hostData, configData, path.getText()));
 	}
 
 	private void initLoadMenuButton() {
