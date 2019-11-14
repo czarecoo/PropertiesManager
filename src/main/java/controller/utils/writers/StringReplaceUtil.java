@@ -1,4 +1,4 @@
-package controller.utils;
+package controller.utils.writers;
 
 public final class StringReplaceUtil {
 	private static final String SEPARATOR = "=";

@@ -5,9 +5,9 @@ import java.io.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import controller.utils.ConfigDataSaver;
-import controller.utils.HostDataSaver;
 import controller.utils.PropertiesHandler;
+import controller.utils.writers.ConfigDataSaver;
+import controller.utils.writers.HostDataSaver;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -17,24 +17,27 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
-import model.ConfigData;
-import model.HostData;
-import model.UserData;
+import model.Fqdn;
+import model.Ip;
+import model.Irmc;
+import model.holders.ConfigData;
+import model.holders.HostData;
+import model.holders.UserData;
 
 public class Controller {
 	static final Logger LOG = LoggerFactory.getLogger(Controller.class);
 	@FXML
-	private ChoiceBox<String> bx;
+	private ChoiceBox<Irmc> bx;
 	@FXML
-	private ChoiceBox<String> cx1;
+	private ChoiceBox<Fqdn> cx1;
 	@FXML
-	private ChoiceBox<String> cx2;
+	private ChoiceBox<Irmc> cx2;
 	@FXML
-	private ChoiceBox<String> es;
+	private ChoiceBox<Ip> es;
 	@FXML
-	private ChoiceBox<String> vc1;
+	private ChoiceBox<Ip> vc1;
 	@FXML
-	private ChoiceBox<String> vc2;
+	private ChoiceBox<Ip> vc2;
 
 	@FXML
 	private Button browse;
@@ -127,8 +130,10 @@ public class Controller {
 	private void loadDefaultData() {
 		PropertiesHandler propertiesHandler = new PropertiesHandler();
 		UserData userData = propertiesHandler.load();
-		choiceBoxesController.setValues(userData);
-		path.setText(userData.getPath());
-		LOG.info("Loaded default data");
+		if (userData != null) {
+			choiceBoxesController.setValues(userData);
+			path.setText(userData.getPath());
+			LOG.info("Loaded default data");
+		}
 	}
 }

@@ -1,37 +1,41 @@
 package controller;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
-import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import controller.utils.TxtFileReader;
+import controller.utils.readers.TxtToFqdnGroupReader;
+import controller.utils.readers.TxtToIpGroupReader;
+import controller.utils.readers.TxtToIpReader;
+import controller.utils.readers.TxtToIrmcReader;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ChoiceBox;
-import model.ConfigData;
-import model.HostData;
-import model.UserData;
+import model.Fqdn;
+import model.Ip;
+import model.Irmc;
+import model.holders.ConfigData;
+import model.holders.HostData;
+import model.holders.UserData;
 
 public class ChoiceBoxesController {
 	static final Logger LOG = LoggerFactory.getLogger(ChoiceBoxesController.class);
 
-	private ChoiceBox<String> bx;
-	private ChoiceBox<String> cx1;
-	private ChoiceBox<String> cx2;
-	private ChoiceBox<String> es;
-	private ChoiceBox<String> vc1;
-	private ChoiceBox<String> vc2;
+	private ChoiceBox<Irmc> bx;
+	private ChoiceBox<Fqdn> cx1;
+	private ChoiceBox<Irmc> cx2;
+	private ChoiceBox<Ip> es;
+	private ChoiceBox<Ip> vc1;
+	private ChoiceBox<Ip> vc2;
 
-	private List<String> vcList;
+	private List<List<Fqdn>> fqdnListOfLists;
+	private List<List<Ip>> vcsListOfLists;
 
-	private List<String> cxList;
-
-	public ChoiceBoxesController(ChoiceBox<String> bx, ChoiceBox<String> cx1, ChoiceBox<String> cx2,
-			ChoiceBox<String> es, ChoiceBox<String> vc1, ChoiceBox<String> vc2) {
+	public ChoiceBoxesController(ChoiceBox<Irmc> bx, ChoiceBox<Fqdn> cx1, ChoiceBox<Irmc> cx2, ChoiceBox<Ip> es,
+			ChoiceBox<Ip> vc1, ChoiceBox<Ip> vc2) {
 		this.bx = bx;
 		this.cx1 = cx1;
 		this.cx2 = cx2;
@@ -41,46 +45,78 @@ public class ChoiceBoxesController {
 	}
 
 	public void init() {
-		TxtFileReader txtFileReader = new TxtFileReader();
-		bx.setItems(FXCollections.observableArrayList(txtFileReader.read("bx.txt")));
-		es.setItems(FXCollections.observableArrayList(txtFileReader.read("es.txt")));
+		TxtToIrmcReader txtToIrmcReader = new TxtToIrmcReader();
+		bx.setItems(txtToIrmcReader.read("bx.txt"));
 
-		vcList = txtFileReader.read("vc.txt");
-		List<String> processedVcList = processList();
-		ObservableList<String> processedObservableVcList = FXCollections.observableArrayList(processedVcList);
-		vc1.setItems(processedObservableVcList);
-		vc2.setItems(processedObservableVcList);
+		TxtToIpReader txtToIpReader = new TxtToIpReader();
+		es.setItems(txtToIpReader.read("es.txt"));
 
-		cxList = txtFileReader.read("cx.txt");
-		List<String> processedCx1List = processCx1List();
-		ObservableList<String> processedObservableCx1List = FXCollections.observableArrayList(processedCx1List);
-		cx1.setItems(processedObservableCx1List);
-		List<String> processedCx2List = processCx2List();
-		ObservableList<String> processedObservableCx2List = FXCollections.observableArrayList(processedCx2List);
-		cx2.setItems(processedObservableCx2List);
+		TxtToFqdnGroupReader txtToFqdnGroupReader = new TxtToFqdnGroupReader();
+		fqdnListOfLists = txtToFqdnGroupReader.read("cx.txt");
+		ObservableList<Fqdn> fqdnList = processFqdnGroup(fqdnListOfLists);
+		cx1.setItems(fqdnList);
+
+		cx1.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+			ObservableList<Irmc> filteredList = getAppriopriateCxList(newValue);
+			cx2.setItems(filteredList);
+			if (!filteredList.isEmpty()) {
+				cx2.setValue(filteredList.get(0));
+			}
+		});
+
+		TxtToIpGroupReader txtToIpGroupReader = new TxtToIpGroupReader();
+		vcsListOfLists = txtToIpGroupReader.read("vc.txt");
+		ObservableList<Ip> vcList = processVcGroup(vcsListOfLists);
+		vc1.setItems(vcList);
+
+		vc1.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+			ObservableList<Ip> filteredList = getAppriopriateVcList(newValue);
+			vc2.setItems(filteredList);
+			if (!filteredList.isEmpty()) {
+				vc2.setValue(filteredList.get(0));
+			}
+		});
+
 		LOG.info("Initialized choice box lists");
 	}
 
-	private List<String> processCx1List() {
-		Predicate<String> isNotEmpty = s -> !s.isEmpty();
-		UnaryOperator<String> fqdnFirst = s -> {
-			String[] split = s.split(" ");
-			return split[1] + " (" + split[0] + ")";
-		};
-		return cxList.stream().filter(isNotEmpty).map(fqdnFirst).collect(Collectors.toList());
+	private ObservableList<Irmc> getAppriopriateCxList(Fqdn newValue) {
+		for (List<Fqdn> observableList : fqdnListOfLists) {
+			for (Fqdn fqdn : observableList) {
+				if (fqdn.equals(newValue)) {
+					return FXCollections.observableArrayList(observableList.stream()
+							.filter(c -> !c.getIp().equals(newValue.getIp()))
+							.map(c -> new Irmc(c.getIp()))
+							.collect(Collectors.toList()));
+				}
+			}
+		}
+		return FXCollections.observableArrayList();
 	}
 
-	private List<String> processCx2List() {
-		Predicate<String> isNotEmpty = s -> !s.isEmpty();
-		UnaryOperator<String> removeFqdn = s -> {
-			return s.split(" ")[0];
-		};
-		return cxList.stream().filter(isNotEmpty).map(removeFqdn).collect(Collectors.toList());
+	private ObservableList<Ip> getAppriopriateVcList(Ip newValue) {
+		for (List<Ip> observableList : vcsListOfLists) {
+			for (Ip ip : observableList) {
+				if (ip.equals(newValue)) {
+					return FXCollections.observableArrayList(observableList.stream()
+							.filter(c -> !c.getIp().equals(newValue.getIp()))
+							.collect(Collectors.toList()));
+				}
+			}
+		}
+		return FXCollections.observableArrayList();
 	}
 
-	private List<String> processList() {
-		Predicate<String> isNotEmpty = e -> !e.isEmpty();
-		return vcList.stream().filter(isNotEmpty).collect(Collectors.toList());
+	private ObservableList<Fqdn> processFqdnGroup(List<List<Fqdn>> fqdnListOfLists) {
+		List<Fqdn> bigList = new ArrayList<>();
+		fqdnListOfLists.forEach(list -> list.forEach(bigList::add));
+		return FXCollections.observableArrayList(bigList);
+	}
+
+	private ObservableList<Ip> processVcGroup(List<List<Ip>> vcsListOfLists) {
+		List<Ip> bigList = new ArrayList<>();
+		vcsListOfLists.forEach(list -> list.forEach(bigList::add));
+		return FXCollections.observableArrayList(bigList);
 	}
 
 	public ConfigData createConfigData() {

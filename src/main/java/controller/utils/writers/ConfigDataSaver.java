@@ -1,6 +1,6 @@
-package controller.utils;
+package controller.utils.writers;
 
-import static controller.utils.StringReplaceUtil.replace;
+import static controller.utils.writers.StringReplaceUtil.replace;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import model.ConfigData;
+import model.holders.ConfigData;
 
 public class ConfigDataSaver {
 	static final Logger LOG = LoggerFactory.getLogger(ConfigDataSaver.class);
@@ -26,10 +26,10 @@ public class ConfigDataSaver {
 	public void save(ConfigData config, String userPath) {
 		Path path = Paths.get(userPath, FILE_PATH);
 		try (Stream<String> lines = Files.lines(path)) {
-			List<String> replaced = lines.map(line -> replace(line, ES1_KEY, config.getEs()))
-					.map(line -> replace(line, ES2_KEY, config.getEs()))
-					.map(line -> replace(line, VC1_KEY, config.getVc1()))
-					.map(line -> replace(line, VC2_KEY, config.getVc2()))
+			List<String> replaced = lines.map(line -> replace(line, ES1_KEY, config.getEs().getIp()))
+					.map(line -> replace(line, ES2_KEY, config.getEs().getIp()))
+					.map(line -> replace(line, VC1_KEY, config.getVc1().getIp()))
+					.map(line -> replace(line, VC2_KEY, config.getVc2().getIp()))
 					.collect(Collectors.toList());
 			Files.write(path, replaced);
 			LOG.info("Saved config data to file: {}", FILE_PATH);

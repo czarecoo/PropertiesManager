@@ -1,4 +1,8 @@
-package model;
+package model.holders;
+
+import model.Fqdn;
+import model.Ip;
+import model.Irmc;
 
 public class UserData {
 	private HostData hostData;
@@ -11,27 +15,27 @@ public class UserData {
 		this.path = path != null ? path : "";
 	}
 
-	public String getBx() {
+	public Irmc getBx() {
 		return hostData.getBx();
 	}
 
-	public String getCx1() {
+	public Fqdn getCx1() {
 		return hostData.getCx1();
 	}
 
-	public String getCx2() {
+	public Irmc getCx2() {
 		return hostData.getCx2();
 	}
 
-	public String getEs() {
+	public Ip getEs() {
 		return configData.getEs();
 	}
 
-	public String getVc1() {
+	public Ip getVc1() {
 		return configData.getVc1();
 	}
 
-	public String getVc2() {
+	public Ip getVc2() {
 		return configData.getVc2();
 	}
 
