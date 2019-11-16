@@ -6,9 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import application.PropertiesManagerUI;
-import controller.utils.PropertiesHandler;
-import controller.utils.writers.ConfigDataSaver;
-import controller.utils.writers.HostDataSaver;
+import controller.utils.properties.UserDataHandler;
+import controller.utils.writers.DataSaver;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -79,6 +78,7 @@ public class Controller {
 	private void initBrowseButton() {
 		DirectoryChooser directoryChooser = new DirectoryChooser();
 		browse.setOnAction(e -> {
+			LOG.info("Browse button clicked, popup window should show");
 			Stage stage = PropertiesManagerUI.getStage();
 			File selectedDirectory = directoryChooser.showDialog(stage);
 			if (selectedDirectory != null && selectedDirectory.getAbsolutePath() != null) {
@@ -91,12 +91,13 @@ public class Controller {
 
 	private void initUpdateButton() {
 		update.setOnAction(e -> {
+			LOG.info("Update button clicked");
+			DataSaver dataSaver = new DataSaver();
+
 			ConfigData configData = choiceBoxesController.createConfigData();
-			ConfigDataSaver configSaver = new ConfigDataSaver();
-			configSaver.save(configData, path.getText());
+			dataSaver.save(configData, path.getText());
 			HostData hostData = choiceBoxesController.createHostData();
-			HostDataSaver hostSaver = new HostDataSaver();
-			hostSaver.save(hostData, path.getText());
+			dataSaver.save(hostData, path.getText());
 
 			saveUserDataToProperties(configData, hostData);
 		});
@@ -105,6 +106,7 @@ public class Controller {
 
 	private void initSaveMenuButton() {
 		save.setOnAction(e -> {
+			LOG.info("Save button clicked");
 			ConfigData configData = choiceBoxesController.createConfigData();
 			HostData hostData = choiceBoxesController.createHostData();
 			saveUserDataToProperties(configData, hostData);
@@ -113,12 +115,13 @@ public class Controller {
 	}
 
 	private void saveUserDataToProperties(ConfigData configData, HostData hostData) {
-		PropertiesHandler propertiesHandler = new PropertiesHandler();
+		UserDataHandler propertiesHandler = new UserDataHandler();
 		propertiesHandler.save(new UserData(hostData, configData, path.getText()));
 	}
 
 	private void initLoadMenuButton() {
 		load.setOnAction(e -> {
+			LOG.info("Load button clicked");
 			loadDefaultData();
 		});
 		LOG.info("Initialized load button");
@@ -126,19 +129,22 @@ public class Controller {
 
 	private void initQuitMenuButton() {
 		quit.setOnAction(e -> {
+			LOG.info("Quit button clicked");
 			Platform.exit();
-			LOG.info("Quitting application");
 		});
 		LOG.info("Initialized quit button");
 	}
 
 	private void loadDefaultData() {
-		PropertiesHandler propertiesHandler = new PropertiesHandler();
+		UserDataHandler propertiesHandler = new UserDataHandler();
 		UserData userData = propertiesHandler.load();
 		if (userData != null) {
+			LOG.info(userData.toString());
 			choiceBoxesController.setValues(userData);
 			path.setText(userData.getPath());
 			LOG.info("Loaded default data");
+		} else {
+			LOG.error("Could not load default data");
 		}
 	}
 }

@@ -24,4 +24,17 @@ public class ConfigData {
 	public Ip getVc2() {
 		return vc2;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("ConfigData [es=");
+		builder.append(es);
+		builder.append(", vc1=");
+		builder.append(vc1);
+		builder.append(", vc2=");
+		builder.append(vc2);
+		builder.append("]");
+		return builder.toString();
+	}
 }

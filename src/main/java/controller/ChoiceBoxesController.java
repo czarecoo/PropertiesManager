@@ -69,6 +69,7 @@ public class ChoiceBoxesController {
 		cx1.setItems(fqdnList);
 
 		cx1.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+			LOG.info("Cx1 was set, setting cx2 list");
 			ObservableList<Irmc> filteredList = getAppriopriateCxList(newValue);
 			cx2.setItems(filteredList);
 			if (!filteredList.isEmpty()) {
@@ -104,6 +105,7 @@ public class ChoiceBoxesController {
 		vc1.setItems(vcList);
 
 		vc1.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+			LOG.info("Vc1 was set, setting vc2 list");
 			ObservableList<Ip> filteredList = getAppriopriateVcList(newValue);
 			vc2.setItems(filteredList);
 			if (!filteredList.isEmpty()) {

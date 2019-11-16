@@ -16,7 +16,6 @@ double click jar file to start app's javafx gui
 ```
 
 ## Whats next
-- test_config and hosts properties keys should be read from file (not hardcoded)
 - Update button enables ONLY on not empty fields
 - Success/Error reporting
 - Integration with HRS ?

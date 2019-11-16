@@ -42,4 +42,17 @@ public class UserData {
 	public String getPath() {
 		return path;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("UserData [hostData=");
+		builder.append(hostData);
+		builder.append(", configData=");
+		builder.append(configData);
+		builder.append(", path=");
+		builder.append(path);
+		builder.append("]");
+		return builder.toString();
+	}
 }

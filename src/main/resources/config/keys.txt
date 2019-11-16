@@ -1,0 +1,10 @@
+ES1_KEY=es.host
+ES2_KEY=soa.address
+VC1_KEY=vc.multi.1.host
+VC2_KEY=vc.multi.2.host
+BX_KEY=host.bx.1.address
+CX1_KEY=host.cx.1.address
+CX2_KEY=host.cx.2.address
+BX_IRMC_KEY=host.irmc.bx1.address
+CX1_IRMC_KEY=host.irmc.cx1.address
+CX2_IRMC_KEY=host.irmc.cx2.address

@@ -1,4 +1,4 @@
-package controller.utils;
+package controller.utils.properties;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,8 +18,8 @@ import model.holders.ConfigData;
 import model.holders.HostData;
 import model.holders.UserData;
 
-public class PropertiesHandler {
-	static final Logger LOG = LoggerFactory.getLogger(PropertiesHandler.class);
+public class UserDataHandler {
+	static final Logger LOG = LoggerFactory.getLogger(UserDataHandler.class);
 	private static final String FILE_PATH = "config/user.properties";
 	private static final String BX_KEY = "bx";
 	private static final String CX1_KEY = "cx1";
@@ -37,6 +37,7 @@ public class PropertiesHandler {
 			try (InputStream input = new FileInputStream(FILE_PATH)) {
 				prop.load(input);
 			}
+			LOG.info(userData.toString());
 			try (OutputStream output = new FileOutputStream(FILE_PATH)) {
 				prop.setProperty(BX_KEY, userData.getBx().save());
 				prop.setProperty(CX1_KEY, userData.getCx1().getIp());

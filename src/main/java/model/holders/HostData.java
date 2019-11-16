@@ -25,4 +25,17 @@ public class HostData {
 	public Irmc getCx2() {
 		return cx2;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("HostData [bx=");
+		builder.append(bx);
+		builder.append(", cx1=");
+		builder.append(cx1);
+		builder.append(", cx2=");
+		builder.append(cx2);
+		builder.append("]");
+		return builder.toString();
+	}
 }
