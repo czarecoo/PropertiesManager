@@ -5,6 +5,7 @@ import java.io.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import application.PropertiesManagerUI;
 import controller.utils.PropertiesHandler;
 import controller.utils.writers.ConfigDataSaver;
 import controller.utils.writers.HostDataSaver;
@@ -12,7 +13,6 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Control;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
@@ -78,9 +78,8 @@ public class Controller {
 
 	private void initBrowseButton() {
 		DirectoryChooser directoryChooser = new DirectoryChooser();
-		directoryChooser.setInitialDirectory(new File("C:/Users/Czareg/eclipse-workspace/testProperties"));
 		browse.setOnAction(e -> {
-			Stage stage = Stage.class.cast(Control.class.cast(e.getSource()).getScene().getWindow());
+			Stage stage = PropertiesManagerUI.getStage();
 			File selectedDirectory = directoryChooser.showDialog(stage);
 			if (selectedDirectory != null && selectedDirectory.getAbsolutePath() != null) {
 				path.setText(selectedDirectory.getAbsolutePath());

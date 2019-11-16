@@ -21,7 +21,7 @@ public class ConfigDataSaver {
 	private static final String ES1_KEY = "es.host";
 	private static final String ES2_KEY = "soa.address";
 	private static final String VC1_KEY = "vc.multi.1.host";
-	private static final String VC2_KEY = "vc.mutli.2.host";
+	private static final String VC2_KEY = "vc.multi.2.host";
 
 	public void save(ConfigData config, String userPath) {
 		Path path = Paths.get(userPath, FILE_PATH);

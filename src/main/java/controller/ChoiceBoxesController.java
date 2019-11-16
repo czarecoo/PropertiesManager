@@ -45,12 +45,24 @@ public class ChoiceBoxesController {
 	}
 
 	public void init() {
+		initBxList();
+		initEsList();
+		initCxList();
+		initVcList();
+		LOG.info("Initialized choice box lists");
+	}
+
+	private void initBxList() {
 		TxtToIrmcReader txtToIrmcReader = new TxtToIrmcReader();
 		bx.setItems(txtToIrmcReader.read("bx.txt"));
+	}
 
+	private void initEsList() {
 		TxtToIpReader txtToIpReader = new TxtToIpReader();
 		es.setItems(txtToIpReader.read("es.txt"));
+	}
 
+	private void initCxList() {
 		TxtToFqdnGroupReader txtToFqdnGroupReader = new TxtToFqdnGroupReader();
 		fqdnListOfLists = txtToFqdnGroupReader.read("cx.txt");
 		ObservableList<Fqdn> fqdnList = processFqdnGroup(fqdnListOfLists);
@@ -63,21 +75,12 @@ public class ChoiceBoxesController {
 				cx2.setValue(filteredList.get(0));
 			}
 		});
+	}
 
-		TxtToIpGroupReader txtToIpGroupReader = new TxtToIpGroupReader();
-		vcsListOfLists = txtToIpGroupReader.read("vc.txt");
-		ObservableList<Ip> vcList = processVcGroup(vcsListOfLists);
-		vc1.setItems(vcList);
-
-		vc1.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-			ObservableList<Ip> filteredList = getAppriopriateVcList(newValue);
-			vc2.setItems(filteredList);
-			if (!filteredList.isEmpty()) {
-				vc2.setValue(filteredList.get(0));
-			}
-		});
-
-		LOG.info("Initialized choice box lists");
+	private ObservableList<Fqdn> processFqdnGroup(List<List<Fqdn>> fqdnListOfLists) {
+		List<Fqdn> bigList = new ArrayList<>();
+		fqdnListOfLists.forEach(list -> list.forEach(bigList::add));
+		return FXCollections.observableArrayList(bigList);
 	}
 
 	private ObservableList<Irmc> getAppriopriateCxList(Fqdn newValue) {
@@ -94,6 +97,27 @@ public class ChoiceBoxesController {
 		return FXCollections.observableArrayList();
 	}
 
+	private void initVcList() {
+		TxtToIpGroupReader txtToIpGroupReader = new TxtToIpGroupReader();
+		vcsListOfLists = txtToIpGroupReader.read("vc.txt");
+		ObservableList<Ip> vcList = processVcGroup(vcsListOfLists);
+		vc1.setItems(vcList);
+
+		vc1.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+			ObservableList<Ip> filteredList = getAppriopriateVcList(newValue);
+			vc2.setItems(filteredList);
+			if (!filteredList.isEmpty()) {
+				vc2.setValue(filteredList.get(0));
+			}
+		});
+	}
+
+	private ObservableList<Ip> processVcGroup(List<List<Ip>> vcsListOfLists) {
+		List<Ip> bigList = new ArrayList<>();
+		vcsListOfLists.forEach(list -> list.forEach(bigList::add));
+		return FXCollections.observableArrayList(bigList);
+	}
+
 	private ObservableList<Ip> getAppriopriateVcList(Ip newValue) {
 		for (List<Ip> observableList : vcsListOfLists) {
 			for (Ip ip : observableList) {
@@ -105,18 +129,6 @@ public class ChoiceBoxesController {
 			}
 		}
 		return FXCollections.observableArrayList();
-	}
-
-	private ObservableList<Fqdn> processFqdnGroup(List<List<Fqdn>> fqdnListOfLists) {
-		List<Fqdn> bigList = new ArrayList<>();
-		fqdnListOfLists.forEach(list -> list.forEach(bigList::add));
-		return FXCollections.observableArrayList(bigList);
-	}
-
-	private ObservableList<Ip> processVcGroup(List<List<Ip>> vcsListOfLists) {
-		List<Ip> bigList = new ArrayList<>();
-		vcsListOfLists.forEach(list -> list.forEach(bigList::add));
-		return FXCollections.observableArrayList(bigList);
 	}
 
 	public ConfigData createConfigData() {

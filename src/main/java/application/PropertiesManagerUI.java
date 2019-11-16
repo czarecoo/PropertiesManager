@@ -14,14 +14,16 @@ import javafx.stage.Stage;
 
 public class PropertiesManagerUI extends Application {
 	private static final Logger LOG = LoggerFactory.getLogger(PropertiesManagerUI.class);
-
 	private static final int MIN_WIDTH = 450;
 	private static final int MIN_HEIGHT = 330;
 	private static final String ICON_FILENAME = "icon.png";
 	private static final String APPLICATION_TITLE = "Properties Manager";
 
+	private static Stage stage;
+
 	@Override
 	public void start(Stage stage) throws IOException {
+		this.stage = stage;
 		Parent root = FXMLLoader.load(getClass().getResource("layout.fxml"));
 		Scene scene = new Scene(root);
 		stage.setTitle(APPLICATION_TITLE);
@@ -36,5 +38,9 @@ public class PropertiesManagerUI extends Application {
 
 	public static void main() {
 		launch(PropertiesManagerUI.class);
+	}
+
+	public static Stage getStage() {
+		return stage;
 	}
 }

@@ -29,7 +29,7 @@ public class HostDataSaver {
 		Path path = Paths.get(userPath, FILE_PATH);
 		try (Stream<String> lines = Files.lines(path)) {
 			List<String> replaced = lines.map(line -> replace(line, BX_KEY, hostData.getBx().getIp()))
-					.map(line -> replace(line, CX1_KEY, hostData.getCx1().getIp()))
+					.map(line -> replace(line, CX1_KEY, hostData.getCx1().getFqdn()))
 					.map(line -> replace(line, CX2_KEY, hostData.getCx2().getIp()))
 					.map(line -> replace(line, BX_IRMC_KEY, hostData.getBx().getIrmc()))
 					.map(line -> replace(line, CX1_IRMC_KEY, hostData.getCx1().getIrmc()))
